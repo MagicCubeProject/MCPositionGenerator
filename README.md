@@ -1,2 +1,2 @@
-# MCPositionGenerator
-Rubik's Cube positions generator
+# Magic Sim
+Simulator for Rubik's cube
