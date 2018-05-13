@@ -6,7 +6,7 @@ from MCStep.MCStep import MCStep
 class TestCubeORM(TestCase):
     def test_init(self):
         from CubeORM.CubeORM import CubeORM
-        orm = CubeORM("/work/MagicCubeLib")
+        orm = CubeORM("/work/MagicCubeLib/db","test_db")
 
     def test_save(self):
         from CubeORM.CubeORM import CubeORM
@@ -16,8 +16,8 @@ class TestCubeORM(TestCase):
         orm.save(mcState,MCubeMoves.IDENTICAL,0,1)
         step = MCStep(mcState)
         step.moves([MCubeMoves.UP_DOUBLE_DOWN_DOUBLE, MCubeMoves.FRONT_BACK_INVERS])
-        orm.save(mcState,MCubeMoves.IDENTICAL,0,1)
-
+        id = orm.save(mcState,MCubeMoves.IDENTICAL,0,1)
+        orm.get(id)
 
 
     def test_update(self):

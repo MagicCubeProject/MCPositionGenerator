@@ -1,8 +1,8 @@
+import base64
 import sqlite3
 import os
+import pickle
 
-from MCState.MCState import MagicCubeState
-from MCStep.MCMoves import MCubeMoves
 
 class CubeORM(object):
     def __init__(self,path,name="cube"):
@@ -18,6 +18,7 @@ class CubeORM(object):
          state_id INTEGER PRIMARY KEY,
          parent_state_id INTEGER,
          state VARCHAR NOT NULL UNIQUE,
+         objetc BLOB NOT NULL,
          move VARCHAR NOT NULL,
          generation INTEGER NOT NULL
         );
@@ -26,25 +27,44 @@ class CubeORM(object):
 
 
     def save(self,state,move,parent_state_id,generation):
-        query_temp ="""
-        INSERT INTO states (state,move,parent_state_id,generation)
-        VALUES ("{state}","{move}",{parent_state_id},{generation})
+        query ="""
+        INSERT INTO states (state,move,parent_state_id,generation,objetc)
+        VALUES (?,?,?,?,?)
         """
-        query = query_temp.format(
-            state = state.numeric(),
-            move = str(move),
-            parent_state_id = parent_state_id,
-            generation = generation
+        obj = pickle.dumps(state,3)
+        bobj = sqlite3.Binary(obj)
+
+        data = (
+            state.numeric(),
+            str(move),
+            parent_state_id,
+            generation,
+            bobj
         )
         print("Executing >")
-        print(query)
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query,data)
             self.connection.commit()
             print("State saved :"+state.numeric())
         except sqlite3.IntegrityError:
             print("this state already exist :"+state.numeric())
         return self.cursor.lastrowid
+
+    def get(self,state_id):
+        query_temp ="""
+        SELECT objetc
+        FROM states
+        WHERE state_id = {state_id};
+        """
+        query = query_temp.format(
+            state_id = state_id
+        )
+        print("Executing >")
+        print(query)
+        self.cursor.execute(query)
+        self.connection.commit()
+        obj = self.cursor.fetchall()[0][0]
+        return pickle.loads(obj)
 
     def update(self,state_id,state,move,parent_state_id,generation):
         query_temp ="""
