@@ -5,6 +5,25 @@ import pickle
 
 
 class CubeORM(object):
+    class CubeCata(object):
+        def __init__(self,state,move,parent_state_id,generation):
+            self.state = state
+            self.move = move
+            self.parent_state_id =parent_state_id
+            self.generation = generation
+
+        def tuple(self):
+            obj = pickle.dumps(self.state,3)
+            bobj = sqlite3.Binary(obj)
+            data = (
+                self.state.numeric(),
+                str(self.move),
+                self.parent_state_id,
+                self.generation,
+                bobj
+            )
+            return data
+
     def __init__(self,path,name="cube"):
         suffix = ".db"
         db_path = os.path.join(path, name + suffix)
@@ -26,28 +45,33 @@ class CubeORM(object):
         self.cursor.execute(query)
 
 
-    def save(self,state,move,parent_state_id,generation):
+    def save(self,data):
         query ="""
         INSERT INTO states (state,move,parent_state_id,generation,objetc)
         VALUES (?,?,?,?,?)
         """
-        obj = pickle.dumps(state,3)
-        bobj = sqlite3.Binary(obj)
-
-        data = (
-            state.numeric(),
-            str(move),
-            parent_state_id,
-            generation,
-            bobj
-        )
         print("Executing >")
         try:
-            self.cursor.execute(query,data)
+            self.cursor.execute(query,data.tuple())
             self.connection.commit()
-            print("State saved :"+state.numeric())
+            print("State saved :"+data.state.numeric())
         except sqlite3.IntegrityError:
-            print("this state already exist :"+state.numeric())
+            print("this state already exist :"+data.state.numeric())
+        return self.cursor.lastrowid
+
+    def save_group(self,datas):
+        query ="""
+        INSERT INTO states (state,move,parent_state_id,generation,objetc)
+        VALUES (?,?,?,?,?)
+        """
+        print("Executing >")
+        for data in datas:
+            try:
+                self.cursor.execute(query,data.tuple())
+                self.connection.commit()
+                print("State saved :"+data.state.numeric())
+            except sqlite3.IntegrityError:
+                print("this state already exist :"+data.state.numeric())
         return self.cursor.lastrowid
 
     def get(self,state_id):

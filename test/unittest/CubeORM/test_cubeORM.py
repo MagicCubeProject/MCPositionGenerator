@@ -13,12 +13,24 @@ class TestCubeORM(TestCase):
         orm = CubeORM("/work/MagicCubeLib/db","test_db")
 
         mcState = MagicCubeState()
-        orm.save(mcState,MCubeMoves.IDENTICAL,0,1)
+        data = CubeORM.CubeCata(mcState,MCubeMoves.IDENTICAL,0,1)
+        orm.save(data)
         step = MCStep(mcState)
         step.moves([MCubeMoves.UP_DOUBLE_DOWN_DOUBLE, MCubeMoves.FRONT_BACK_INVERS])
-        id = orm.save(mcState,MCubeMoves.IDENTICAL,0,1)
+        data2 = CubeORM.CubeCata(mcState,MCubeMoves.IDENTICAL,0,1)
+        id = orm.save(data2)
         orm.get(id)
 
+    def test_save_group(self):
+        from CubeORM.CubeORM import CubeORM
+        orm = CubeORM("/work/MagicCubeLib/db","test_db")
+        mcState = MagicCubeState()
+        data = CubeORM.CubeCata(mcState,MCubeMoves.IDENTICAL,0,1)
+        mcState2 = MagicCubeState()
+        step = MCStep(mcState)
+        step.moves([MCubeMoves.UP_DOUBLE_DOWN_INVERS, MCubeMoves.FRONT_BACK_INVERS])
+        data2 = CubeORM.CubeCata(mcState,MCubeMoves.UP_DOUBLE_DOWN_INVERS,0,1)
+        orm.save_group([data,data2])
 
     def test_update(self):
         from CubeORM.CubeORM import CubeORM
