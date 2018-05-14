@@ -76,7 +76,7 @@ class CubeORM(object):
 
     def get(self,state_id):
         query_temp ="""
-        SELECT objetc
+        SELECT objetc,
         FROM states
         WHERE state_id = {state_id};
         """
@@ -89,6 +89,13 @@ class CubeORM(object):
         self.connection.commit()
         obj = self.cursor.fetchall()[0][0]
         return pickle.loads(obj)
+
+    def get_states(self,generation,start=0,count = 100):
+        query = """
+        SELECT TOP ? state_id,state
+        FROM states
+        WHERE generation=?,state_id > ?;
+        """
 
     def update(self,state_id,state,move,parent_state_id,generation):
         query_temp ="""

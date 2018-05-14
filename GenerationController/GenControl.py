@@ -25,6 +25,8 @@ class GControl(object):
 
         print("Done first gen")
 
+
+
     def start_second_gen(self):
         self.fisrt_second_dict = {}
         for state in self.fisrt_gen_dict.keys():
