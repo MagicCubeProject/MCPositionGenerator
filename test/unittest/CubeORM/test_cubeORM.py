@@ -32,6 +32,15 @@ class TestCubeORM(TestCase):
         data2 = CubeORM.CubeCata(mcState,MCubeMoves.UP_DOUBLE_DOWN_INVERS,0,1)
         orm.save_group([data,data2])
 
+    def test_get_group(self):
+        from CubeORM.CubeORM import CubeORM
+        orm = CubeORM("/work/MagicCubeLib/db","test1")
+        states_dict = orm.get_states(2)
+        last_state =  states_dict[-1]["id"]
+        print(last_state)
+        orm.get_states(2,last_state)
+
+
     def test_update(self):
         from CubeORM.CubeORM import CubeORM
         orm = CubeORM("/work/MagicCubeLib/db","test_db")
