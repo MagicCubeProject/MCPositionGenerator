@@ -1,14 +1,15 @@
-from GenerationController.GenControl import GControl
+#from GenerationController.GenControl import GControl
+from GenerationController.GenerationController import GenerationController
 
 
 def main():
-    g = GControl("/work/MagicCubeLib/db")
-    # g.start_fisrt_gen()
-    # g.start_second_gen()
-    g.start_gen(3)
-    #g.start_third_gen()
-    # g.start_4_gen()
-    # g.start_5_gen()
+
+
+    g = GenerationController("/work/MagicCubeLib/db","TestDB002")
+    for x in range(5):
+        g.start_gen(x)
+
 
 if __name__ == "__main__":
     main()
+locals()

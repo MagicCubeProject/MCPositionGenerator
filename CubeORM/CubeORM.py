@@ -90,21 +90,8 @@ class CubeORM(object):
         obj = self.cursor.fetchall()[0][0]
         return pickle.loads(obj)
 
-    def get_states(self,generation,start=0,count = 50):
-        query = """
-        SELECT state_id,objetc FROM states
-        WHERE generation=? and state_id >?
-        LIMIT ?;
-        """
 
-        self.cursor.execute(
-            query,
-            (generation,start,count)
-        )
-        self.connection.commit()
-        obj = self.cursor.fetchall()
-        states = list(map(lambda x: {"id":x[0],"object":x[1]},obj))
-        return states
+
 
     def update(self,state_id,state,move,parent_state_id,generation):
         query_temp ="""
