@@ -10,8 +10,8 @@ def main():
     chat_id = updates[0].message.chat._id_attrs[0]
     print(bot.get_me())
     bot.send_message(chat_id=chat_id, text="\n\n----Start---\n")
-    g = GenerationController("/work/MagicCubeLib/db","TestDB004")
-    for x in range(25):
+    g = GenerationController("/work/MagicCubeLib/db","CheckDB")
+    for x in range(4):
         msg = "Starting Make Generation : {gen}"
         bot.send_message(chat_id=chat_id,
                             text=msg.format(gen=x)
