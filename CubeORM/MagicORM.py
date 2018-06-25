@@ -12,22 +12,11 @@ class MagicORM(object):
 
 
     def __crate_table(self):
-        query = """
-        CREATE TABLE IF NOT EXISTS states (
-         state_id INTEGER PRIMARY KEY,
-         parent_state_id INTEGER,
-         state VARCHAR NOT NULL,
-         distances VARCHAR NOT NULL,
-         move VARCHAR NOT NULL,
-         generation INTEGER NOT NULL
-        );
-        """
-
-        #query = """
+        # query = """
         # CREATE TABLE IF NOT EXISTS states (
         #  state_id INTEGER PRIMARY KEY,
         #  parent_state_id INTEGER,
-        #  state VARCHAR NOT NULL UNIQUE,
+        #  state VARCHAR NOT NULL,
         #  distances VARCHAR NOT NULL,
         #  move VARCHAR NOT NULL,
         #  generation INTEGER NOT NULL
@@ -39,11 +28,22 @@ class MagicORM(object):
         #  state_id INTEGER PRIMARY KEY,
         #  parent_state_id INTEGER,
         #  state VARCHAR NOT NULL UNIQUE,
-        #  distances VARCHAR NOT NULL UNIQUE,
+        #  distances VARCHAR NOT NULL,
         #  move VARCHAR NOT NULL,
         #  generation INTEGER NOT NULL
         # );
         # """
+
+        query = """
+        CREATE TABLE IF NOT EXISTS states (
+         state_id INTEGER PRIMARY KEY,
+         parent_state_id INTEGER,
+         state VARCHAR NOT NULL UNIQUE,
+         distances VARCHAR NOT NULL UNIQUE,
+         move VARCHAR NOT NULL,
+         generation INTEGER NOT NULL
+        );
+        """
         self.cursor.execute(query)
 
     def save(self,data):

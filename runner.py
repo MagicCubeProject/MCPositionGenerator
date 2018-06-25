@@ -10,8 +10,8 @@ def main():
     chat_id = updates[0].message.chat._id_attrs[0]
     print(bot.get_me())
     bot.send_message(chat_id=chat_id, text="\n\n----Start---\n")
-    g = GenerationController("/work/MagicCubeLib/db","CheckDB")
-    for x in range(4):
+    g = GenerationController("/work/MagicCubeLib/db","CheckDB16")
+    for x in range(70):
         msg = "Starting Make Generation : {gen}"
         bot.send_message(chat_id=chat_id,
                             text=msg.format(gen=x)
@@ -19,7 +19,7 @@ def main():
         size =g.start_gen(x)
         msg1 = "Elemt count of Generation : {gen} | is : {size}"
         bot.send_message(chat_id=chat_id,
-                            text=msg1.format(gen=x,size=size)
+                            text=msg1.format(gen=x,size=(size) )
                          )
     bot.send_message(chat_id=chat_id, text="\n\n----Done---\n")
 

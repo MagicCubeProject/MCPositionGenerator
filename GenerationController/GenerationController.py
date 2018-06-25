@@ -46,6 +46,7 @@ class GenerationController(object):
                     child_states_data.append(data)
                 self.orm.save_group(child_states_data)
             states = self.orm.get_states(gen-1,parent_id)
+
         return size
     # def gen_child_state_data(work_state,parent_id,gen):
     #     f_p = partial(
